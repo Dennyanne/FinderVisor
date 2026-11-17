@@ -112,7 +112,7 @@ Cell legend: `pass (value)` / `FAIL (value)` / `needs user` / `blocked (reason)`
 
 | Check | Context | Result |
 |---|---|---|
-| S3(a) Carbon `RegisterEventHotKey` Option+F | CLI (Claude Code host) | **registration returned noErr (0)** — also Option+Shift+F and Cmd+Option+F. Delivery not yet tested: run `HotkeySpike carbon --listen 10` and press the combos. The plan expected rejection on macOS 15+; if delivery also works, D4's rationale for rejecting Carbon weakens but option B (single active tap) still needs the tap for double-tap. |
+| S3(a) Carbon `RegisterEventHotKey` Option+F | CLI (non-terminal host app) | **registration returned noErr (0)** — also Option+Shift+F and Cmd+Option+F. Delivery not yet tested: run `HotkeySpike carbon --listen 10` and press the combos. The plan expected rejection on macOS 15+; if delivery also works, D4's rationale for rejecting Carbon weakens but option B (single active tap) still needs the tap for double-tap. |
 | S3(b) active tap swallows Option+F in TextEdit | CLI | `tapCreated=false` in the agent run (host lacks Accessibility; `listenEventAccess=false`). needs user: `HotkeySpike tap --seconds 10` from a terminal with Accessibility. |
 | S3(c) tap created after grant works without relaunch | FinderVisorSpike.app | needs user ("S3(c/d) Start tap" then grant Accessibility while it retries) |
 | S3(d) Input Monitoring required in addition to Accessibility? | FinderVisorSpike.app | needs user (record `inputMonitoring=` in the S3(c)/S3(d) RESULT lines) |
@@ -133,8 +133,7 @@ Cell legend: `pass (value)` / `FAIL (value)` / `needs user` / `blocked (reason)`
   `com.apple.security.automation.apple-events` entitlement, `LSUIElement = true`.
 - Detected configuration: 1 display `0,0 1512x982`, Dock bottom (autohide on), Stage Manager off.
 - Permissions (`HideSpike perm`): `axTrusted=false`, `aeFinder=notDetermined (-1744)`, `listenEvent=false`.
-  Responsible process chain: `HideSpike` → `/bin/zsh` → `…/claude-code/2.1.325/…/claude.app/Contents/MacOS/claude`
-  → `/Applications/Claude.app/Contents/Helpers/disclaimer` → **`/Applications/Claude.app`** (TCC host).
+  Responsible process chain: `HideSpike` → `/bin/zsh` → a GUI host app without Accessibility or Automation grants (TCC host).
   Per instructions no TCC workaround was attempted and no AX/AE check was run; the Apple Events consent prompt was not triggered.
 - Ran without permissions: `HotkeySpike carbon` (S3(a) registration), `HotkeySpike tap --seconds 3` (tap not created; nothing installed),
   `frame-dump` (CG part only).

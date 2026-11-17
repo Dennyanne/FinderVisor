@@ -14,7 +14,7 @@ xcuserdata/
 # macOS
 .DS_Store
 
-# oh-my-claudecode working state
+# Local planning and working state
 .omc/
 
 # Local spike run logs (contain machine-specific paths)
