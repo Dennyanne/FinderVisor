@@ -1,0 +1,21 @@
+# Build output
+build/
+.build/
+.swiftpm/
+DerivedData/
+
+# Personal signing overrides
+Config/Local.xcconfig
+
+# Xcode per-user state
+xcuserdata/
+*.xcuserstate
+
+# macOS
+.DS_Store
+
+# oh-my-claudecode working state
+.omc/
+
+# Local spike run logs (contain machine-specific paths)
+Spike/logs/

@@ -1,0 +1,12 @@
+// Copy to Config/Local.xcconfig (gitignored) and adjust. Included at the end of Config/Base.xcconfig.
+//
+// Option 1 (recommended): a self-signed code-signing certificate named "FinderVisor Local Signing"
+// (Keychain Access > Certificate Assistant > Create a Certificate; Identity Type: Self-Signed Root;
+// Certificate Type: Code Signing; then set Trust > Code Signing to "Always Trust").
+CODE_SIGN_IDENTITY = FinderVisor Local Signing
+CODE_SIGN_STYLE = Manual
+
+// Option 2: an Apple Development certificate from a (free) personal team. Comment out option 1 and use:
+// CODE_SIGN_IDENTITY = Apple Development
+// CODE_SIGN_STYLE = Automatic
+// DEVELOPMENT_TEAM = ABCDE12345

@@ -1,0 +1,244 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F1A000000000000000000101 /* VisorCore in Frameworks */ = {isa = PBXBuildFile; productRef = F1A000000000000000000302 /* VisorCore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F1A000000000000000000201 /* FinderVisor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinderVisor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1A000000000000000000202 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		F1A000000000000000000203 /* Local.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text; path = Local.xcconfig.example; sourceTree = "<group>"; };
+		F1A000000000000000000204 /* VisorCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = VisorCore; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F1A000000000000000000401 /* Exceptions for "App" folder in "FinderVisor" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F1A000000000000000000601 /* FinderVisor */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F1A000000000000000000402 /* App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F1A000000000000000000401 /* Exceptions for "App" folder in "FinderVisor" target */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F1A000000000000000000501 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1A000000000000000000101 /* VisorCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F1A000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				F1A000000000000000000402 /* App */,
+				F1A000000000000000000003 /* Config */,
+				F1A000000000000000000004 /* Packages */,
+				F1A000000000000000000002 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F1A000000000000000000002 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F1A000000000000000000201 /* FinderVisor.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F1A000000000000000000003 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				F1A000000000000000000202 /* Base.xcconfig */,
+				F1A000000000000000000203 /* Local.xcconfig.example */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		F1A000000000000000000004 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				F1A000000000000000000204 /* VisorCore */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F1A000000000000000000601 /* FinderVisor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F1A000000000000000000802 /* Build configuration list for PBXNativeTarget "FinderVisor" */;
+			buildPhases = (
+				F1A000000000000000000502 /* Sources */,
+				F1A000000000000000000501 /* Frameworks */,
+				F1A000000000000000000503 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F1A000000000000000000402 /* App */,
+			);
+			name = FinderVisor;
+			packageProductDependencies = (
+				F1A000000000000000000302 /* VisorCore */,
+			);
+			productName = FinderVisor;
+			productReference = F1A000000000000000000201 /* FinderVisor.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F1A000000000000000000701 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2720;
+				LastUpgradeCheck = 2720;
+				TargetAttributes = {
+					F1A000000000000000000601 = {
+						CreatedOnToolsVersion = 27.2;
+					};
+				};
+			};
+			buildConfigurationList = F1A000000000000000000801 /* Build configuration list for PBXProject "FinderVisor" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F1A000000000000000000001;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F1A000000000000000000301 /* XCLocalSwiftPackageReference "Packages/VisorCore" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F1A000000000000000000002 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F1A000000000000000000601 /* FinderVisor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F1A000000000000000000503 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F1A000000000000000000502 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F1A000000000000000000901 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F1A000000000000000000202 /* Base.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F1A000000000000000000902 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F1A000000000000000000202 /* Base.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		F1A000000000000000000903 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		F1A000000000000000000904 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F1A000000000000000000801 /* Build configuration list for PBXProject "FinderVisor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1A000000000000000000901 /* Debug */,
+				F1A000000000000000000902 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F1A000000000000000000802 /* Build configuration list for PBXNativeTarget "FinderVisor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1A000000000000000000903 /* Debug */,
+				F1A000000000000000000904 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F1A000000000000000000301 /* XCLocalSwiftPackageReference "Packages/VisorCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/VisorCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F1A000000000000000000302 /* VisorCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VisorCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F1A000000000000000000701 /* Project object */;
+}

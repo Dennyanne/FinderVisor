@@ -1,0 +1,30 @@
+// Shared build settings for FinderVisor. Personal signing overrides go in Config/Local.xcconfig (gitignored);
+// copy Config/Local.xcconfig.example to get started.
+
+PRODUCT_NAME = FinderVisor
+PRODUCT_BUNDLE_IDENTIFIER = io.github.findervisor.FinderVisor
+MARKETING_VERSION = 0.1.0
+CURRENT_PROJECT_VERSION = 1
+
+SDKROOT = macosx
+MACOSX_DEPLOYMENT_TARGET = 14.0
+SWIFT_VERSION = 6.0
+ALWAYS_SEARCH_USER_PATHS = NO
+
+INFOPLIST_FILE = App/Info.plist
+GENERATE_INFOPLIST_FILE = NO
+CODE_SIGN_ENTITLEMENTS = App/FinderVisor.entitlements
+ENABLE_HARDENED_RUNTIME = YES
+ENABLE_APP_SANDBOX = NO
+ENABLE_USER_SCRIPT_SANDBOXING = YES
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks
+COMBINE_HIDPI_IMAGES = YES
+SWIFT_EMIT_LOC_STRINGS = YES
+
+// Default: ad-hoc signing, so a clean clone builds with nothing but Xcode. TCC grants then reset on every
+// rebuild; set a stable identity in Config/Local.xcconfig to avoid that.
+CODE_SIGN_STYLE = Manual
+CODE_SIGN_IDENTITY = -
+DEVELOPMENT_TEAM =
+
+#include? "Local.xcconfig"
