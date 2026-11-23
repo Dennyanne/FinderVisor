@@ -34,7 +34,7 @@ final class AppEnvironment {
         }
         let settings = settings
         visor = VisorController(locator: locator, ax: ax, windowList: windowList, screens: LiveScreenProvider(),
-                                activator: activator, hider: MinimizeHider(ax: ax), focus: focus,
+                                activator: activator, hider: AppHideFirstHider(ax: ax, activator: activator, windowList: windowList), focus: focus,
                                 heightPercent: { settings.heightPercent })
         self.locator = locator
         self.focus = focus

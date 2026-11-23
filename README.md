@@ -22,10 +22,11 @@ Each trigger (double-tap of a modifier key, or a recorded shortcut) toggles the 
 | Visible and not fully covered | **Hide**: the previously frontmost app regains focus. |
 | Visible but fully covered by other windows | **Bring to front** (not hidden). |
 
-- Hide is **minimize**, never close: folder, tabs and view state are the same when shown again.
+- Hide never closes the Visor: folder, tabs and view state are the same when shown again.
+- Hide is **instant** when the Visor is the only open Finder window (minimized Finder windows don't count): FinderVisor hides the Finder app. Otherwise it **minimizes** the Visor.
 - Closing the Visor yourself (Cmd-W) means the next trigger creates a fresh one at home.
-- Other Finder windows are never moved, resized, hidden or closed.
-- Hide and show use the macOS minimize/restore animation (about 0.5 s) and the Visor appears as a Dock thumbnail while hidden. This is an accepted trade-off of using a real Finder window with public APIs.
+- Other Finder windows are never moved, resized, hidden or closed. Finder is hidden as a whole only when no other Finder window is visible on any Space.
+- When other Finder windows are open, hide and show use the macOS minimize/restore animation (about 0.5 s) and the Visor appears as a Dock thumbnail while hidden. This is an accepted trade-off of using a real Finder window with public APIs.
 - No always-on-top and no follow-across-Spaces.
 
 ## Requirements
@@ -99,7 +100,8 @@ The menu itself has: Toggle Visor, Settings..., Launch at Login, Quit FinderViso
 - **Tested configuration only:** single display, Dock at the bottom with auto-hide, Stage Manager off. Multiple displays, a left/right Dock and Stage Manager are untested.
 - **Finder hidden with Cmd-H**: showing the Visor has to unhide Finder as a whole, so your other Finder windows reappear too (their positions and sizes are not changed). Accepted limitation: macOS has no public API to unhide a single window of a hidden app.
 - **Finder > Window > Merge All Windows** while the Visor is key pulls your other windows into the Visor as tabs, and they are hidden with it. FinderVisor does not prevent this.
-- **Minimize animation (~0.5 s) and Dock thumbnail** when hiding and showing.
+- **Minimize animation (~0.5 s) and Dock thumbnail** when hiding and showing while other Finder windows are open (on any Space). Hide is instant only when the Visor is the only open Finder window.
+- While the Visor is hidden by hiding Finder, **clicking the desktop** or using **Reveal in Finder** (Show in Finder) from another app unhides Finder, so the Visor reappears too. Accepted side effect of the instant hide.
 - **Cmd-M** on the Visor: it counts as hidden, so the next trigger restores it at the bottom of the mouse's screen.
 - Hotkeys do not work while **Secure Event Input** is active (for example in password fields).
 - After a **Finder relaunch**, FinderVisor re-attaches to the restored Visor: a Finder window (minimized or on screen) at the Visor's last frame ±4 pt, with all its tabs. If several windows match, the last known Visor folder breaks the tie. It retries 1, 3 and 6 s after Finder launches and again on the next trigger. If no single match is found, the next trigger creates a new Visor at home, and the old window (if any) stays behind as an ordinary Finder window.
@@ -147,10 +149,11 @@ FinderVisor는 BinaryAge의 [TotalFinder Visor 기능](https://totalfinder.binar
 | 보이고 완전히 가려지지 않음 | **숨김**: 이전에 사용하던 앱으로 포커스 복귀 |
 | 보이지만 다른 창에 완전히 가려짐 | **맨 앞으로** 가져옴 (숨기지 않음) |
 
-- 숨김은 닫기가 아니라 **최소화**입니다. 다시 열면 폴더, 탭, 보기 상태가 그대로입니다.
+- 숨김은 Visor를 닫지 않습니다. 다시 열면 폴더, 탭, 보기 상태가 그대로입니다.
+- Visor가 열려 있는 유일한 Finder 창이면(최소화된 Finder 창은 제외) Finder 앱을 가려서 **즉시** 숨깁니다. 그 외에는 Visor를 **최소화**합니다.
 - Visor를 직접 닫으면 다음 호출 때 홈 폴더로 새로 만듭니다.
-- 다른 Finder 창은 이동, 크기 변경, 숨김, 닫기를 하지 않습니다.
-- 숨기기/표시 시 macOS 최소화 애니메이션(약 0.5초)과 Dock 썸네일이 나타납니다. 공개 API로 실제 Finder 창을 쓰기 위해 받아들인 절충입니다.
+- 다른 Finder 창은 이동, 크기 변경, 숨김, 닫기를 하지 않습니다. Finder 전체를 가리는 것은 어느 Space에도 다른 Finder 창이 보이지 않을 때뿐입니다.
+- 다른 Finder 창이 열려 있으면 숨기기/표시 시 macOS 최소화 애니메이션(약 0.5초)과 Dock 썸네일이 나타납니다. 공개 API로 실제 Finder 창을 쓰기 위해 받아들인 절충입니다.
 - 항상 위 표시, Space 간 따라다니기는 지원하지 않습니다.
 
 ## 요구 사항
@@ -208,7 +211,8 @@ macOS 27에서는 개인정보 보호 및 보안 항목의 그룹/이름이 다�
 - Finder가 **Cmd-H**로 가려진 상태에서 Visor를 표시하면 Finder 전체를 다시 보이게 해야 하므로 다른 Finder 창도 함께 나타납니다(위치·크기는 변경되지 않음). 숨겨진 앱의 창 하나만 보이게 하는 공개 API가 없어 감수하는 제한입니다.
 - Visor에 **Cmd-M**(최소화)을 누르면 숨김으로 간주되어, 다음 단축키 입력 때 마우스가 있는 화면 아래쪽에 다시 나타납니다.
 - Visor가 활성일 때 **Finder > 윈도우 > 모든 윈도우 병합**을 쓰면 다른 창이 Visor의 탭으로 합쳐져 함께 숨겨집니다.
-- 최소화 애니메이션(약 0.5초)과 Dock 썸네일이 있습니다.
+- 다른 Finder 창이 (어느 Space에든) 열려 있을 때는 최소화 애니메이션(약 0.5초)과 Dock 썸네일이 있습니다. 즉시 숨김은 Visor가 유일하게 열린 Finder 창일 때만 동작합니다.
+- Finder를 가리는 방식으로 숨긴 동안 **데스크탑을 클릭**하거나 다른 앱에서 **Finder에서 보기(Reveal in Finder)**를 쓰면 Finder가 다시 나타나므로 Visor도 함께 나타납니다. 즉시 숨김을 위해 감수하는 부작용입니다.
 - 보안 입력(Secure Event Input, 암호 입력란 등) 중에는 단축키가 동작하지 않습니다.
 - Finder 재시작 후에는 Visor의 마지막 위치·크기(±4pt)에 있는 Finder 창(최소화 여부 무관, 탭 포함)을 다시 Visor로 연결합니다. 여러 개가 맞으면 마지막으로 기록된 폴더로 구분합니다. Finder 실행 1·3·6초 뒤와 다음 단축키 입력 때 다시 시도하며, 하나로 정해지지 않으면 다음 단축키 입력 때 홈 폴더로 새 Visor를 만들고 이전 창(있다면)은 일반 Finder 창으로 남습니다.
 

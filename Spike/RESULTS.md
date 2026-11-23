@@ -160,3 +160,16 @@ Measured on: single display 1512x982, Dock bottom (autohide), Stage Manager off.
 Other findings: Finder AE window id == CGWindowID (S2 pass). Each Finder tab is a separate AE window and switching tabs changes the AX element and CGWindowID (Visor identity must follow the active tab). Carbon RegisterEventHotKey(Option+F) returns noErr on macOS 27; delivery untested (no key presses during the run). Active CGEventTap creation succeeds once Accessibility is granted; swallow test untested.
 
 **Chosen strategy: P3 (minimize).** The user accepted the ~0.5 s minimize/restore animation and Dock thumbnail. The 150 ms latency targets for hide/show are waived for P3. P1/P2 are not shipped. Remaining manual checks (H-5, H-7, H-8, H-9, H-10, S3b swallow, S3c/S3d, S4) move to Step 5/§7 QA against the real app.
+
+---
+
+## Update (2026-11-23): app-hide first, minimize fallback
+
+The user found the ~0.5 s minimize animation too slow and switched the shipped strategy to **app-hide first, minimize
+fallback**: when the Visor's tab group is Finder's only visible window (no other Finder window that is non-minimized,
+layer 0, at least 200x150 pt and alpha > 0 on any Space; helper windows such as the 1512x33 strips and the 64x64
+window are ignored), hide = `NSRunningApplication.hide()` on Finder; otherwise hide = `AXMinimized` as before. App-hide
+is also skipped when focus returns to Finder itself. To address the P2 H-6 failure (Visor not key in 10/30 shows), the
+show path waits (≤300 ms) for the Visor to be on screen after unhiding Finder, then retries AXRaise + AXMain + activate
+until Finder's focused window is the Visor (≤300 ms). Accepted side effect: while Finder is hidden, clicking the desktop
+or "Reveal in Finder" from another app unhides Finder and the Visor. Not yet re-measured live.

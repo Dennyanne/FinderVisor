@@ -6,6 +6,7 @@ protocol AppActivator {
     var finderPID: pid_t? { get }
     var isFinderHidden: Bool { get }
     var frontmostApplication: (pid: pid_t, bundleID: String?)? { get }
+    func hideFinder()
     func unhideFinder()
     /// Brings `pid` to the front: AX `AXFrontmost` first, `NSRunningApplication.activate` as fallback.
     /// Returns false if the app is no longer running.
@@ -29,6 +30,10 @@ final class LiveAppActivator: AppActivator {
 
     var frontmostApplication: (pid: pid_t, bundleID: String?)? {
         NSWorkspace.shared.frontmostApplication.map { ($0.processIdentifier, $0.bundleIdentifier) }
+    }
+
+    func hideFinder() {
+        finder?.hide()
     }
 
     func unhideFinder() {

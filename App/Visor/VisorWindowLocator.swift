@@ -13,6 +13,8 @@ struct ResolvedVisor {
     let anchorID: UInt32
     /// CGWindowList bounds of the tab group (global top-left coordinates).
     let frame: CGRect
+    /// Every tab window (CGWindowID) of the Visor's tab group.
+    let memberIDs: Set<UInt32>
 }
 
 enum VisorLocatorError: Error {
@@ -92,7 +94,8 @@ final class VisorWindowLocator {
         }
         element = match
         persist()
-        return ResolvedVisor(element: match, activeID: group.activeID, anchorID: group.anchorID, frame: group.frame)
+        return ResolvedVisor(element: match, activeID: group.activeID, anchorID: group.anchorID, frame: group.frame,
+                             memberIDs: group.memberIDs)
     }
 
     /// Whether `window` is the Visor (used by focus return).
@@ -155,7 +158,8 @@ final class VisorWindowLocator {
         }
         guard let found else { throw VisorLocatorError.windowNotFound(aeID: aeID) }
         element = found
-        return ResolvedVisor(element: found, activeID: UInt32(aeID), anchorID: UInt32(aeID), frame: frame)
+        return ResolvedVisor(element: found, activeID: UInt32(aeID), anchorID: UInt32(aeID), frame: frame,
+                             memberIDs: [UInt32(aeID)])
     }
 
     // MARK: - Persistence / refresh

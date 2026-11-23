@@ -3,10 +3,16 @@ import OSLog
 import VisorCore
 
 /// Orchestrates a toggle: re-derive live state → `ToggleDecision` → create / show / hide / bring to front.
-/// Only the Visor's own AX element is ever moved, resized or minimized.
+/// Only the Visor's own AX element is ever moved, resized or minimized; Finder as a whole is hidden only when the
+/// Visor is its only visible window (`AppHideFirstHider`).
 @MainActor
 final class VisorController {
     private static let targetRefreshInterval: Duration = .seconds(5)
+    /// Caps for the show path after Finder app-hide (the spike saw the Visor miss key status in 10/30 shows).
+    private static let onscreenWaitCap: Duration = .milliseconds(300)
+    private static let focusRetryCap: Duration = .milliseconds(300)
+    private static let pollInterval: Duration = .milliseconds(20)
+    private static let focusRetryInterval: Duration = .milliseconds(40)
     private let logger = Logger(subsystem: "io.github.findervisor.FinderVisor", category: "visor")
 
     private let locator: VisorWindowLocator
@@ -51,8 +57,8 @@ final class VisorController {
             logger.debug("toggle → \(String(describing: action))")
             switch action {
             case .create: try await create()
-            case .show: show(visor)
-            case .hide: hide(visor)
+            case .show: await show(visor)
+            case .hide: await hide(visor)
             case .bringToFront: bringToFront(visor)
             }
         } catch {
@@ -82,33 +88,67 @@ final class VisorController {
         focus.recordAtShowTime()
         guard let frame = targetFrame() else { return }
         let visor = try await locator.create(frame: frame)
-        present(visor, at: frame)
+        await present(visor, at: frame)
     }
 
     /// Show path: normalize every hidden state (Finder hidden, minimized), then frame, raise, focus.
-    private func show(_ visor: ResolvedVisor) {
+    private func show(_ visor: ResolvedVisor) async {
         focus.recordAtShowTime()
         guard let frame = targetFrame() else { return }
-        present(visor, at: frame)
+        await present(visor, at: frame)
     }
 
-    private func present(_ visor: ResolvedVisor, at frame: CGRect) {
-        if activator.isFinderHidden { activator.unhideFinder() }
+    private func present(_ visor: ResolvedVisor, at frame: CGRect) async {
+        let finderWasHidden = activator.isFinderHidden
         hider.unhide(visor.element)
         ax.setFrame(visor.element, frame)
-        ax.raise(visor.element)
-        if let pid = activator.finderPID { activator.activate(pid: pid) }
         locator.noteFrame(frame)
         locator.refreshTarget(of: visor)
         startTargetRefresh()
+        guard let pid = activator.finderPID else { return }
+        if finderWasHidden { await waitUntilOnscreen(visor, pid: pid) }
+        await focusVisor(visor, pid: pid)
     }
 
-    private func hide(_ visor: ResolvedVisor) {
+    /// After `unhide()` Finder brings its windows back asynchronously; raising before the Visor is on screen can
+    /// leave another window key. Polls CGWindowList (async, capped).
+    private func waitUntilOnscreen(_ visor: ResolvedVisor, pid: pid_t) async {
+        let clock = ContinuousClock()
+        let deadline = clock.now + Self.onscreenWaitCap
+        while clock.now < deadline {
+            if windowList.windows(ofPID: pid).contains(where: { visor.memberIDs.contains($0.id) && $0.isOnscreen }) {
+                return
+            }
+            try? await Task.sleep(for: Self.pollInterval)
+        }
+        logger.notice("Visor not on screen \(Self.onscreenWaitCap) after unhiding Finder")
+    }
+
+    /// AXRaise + AXMain + activate Finder, then verify Finder is frontmost with the Visor as its focused window;
+    /// retried at short intervals up to a cap.
+    private func focusVisor(_ visor: ResolvedVisor, pid: pid_t) async {
+        let clock = ContinuousClock()
+        let deadline = clock.now + Self.focusRetryCap
+        repeat {
+            ax.raise(visor.element)
+            activator.activate(pid: pid)
+            try? await Task.sleep(for: Self.focusRetryInterval)
+            if activator.frontmostApplication?.pid == pid, let focused = ax.focusedWindow(ofApp: pid),
+               CFEqual(focused, visor.element) {
+                return
+            }
+        } while clock.now < deadline
+        logger.notice("Visor did not become Finder's focused window within \(Self.focusRetryCap)")
+    }
+
+    private func hide(_ visor: ResolvedVisor) async {
         if let live = ax.frame(of: visor.element) { locator.noteFrame(live) }
         locator.refreshTarget(of: visor)
         stopTargetRefresh()
-        hider.hide(visor.element)
-        focus.returnFocus()
+        switch hider.hide(visor, returnsFocusToFinder: focus.returnsToFinder) {
+        case .minimize: focus.returnFocus()
+        case .appHide: await focus.returnFocusAfterAppHide()
+        }
     }
 
     private func bringToFront(_ visor: ResolvedVisor) {
