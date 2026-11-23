@@ -19,6 +19,7 @@ ENABLE_APP_SANDBOX = NO
 ENABLE_USER_SCRIPT_SANDBOXING = YES
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks
 COMBINE_HIDPI_IMAGES = YES
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
 SWIFT_EMIT_LOC_STRINGS = YES
 
 // Default: ad-hoc signing, so a clean clone builds with nothing but Xcode. TCC grants then reset on every
